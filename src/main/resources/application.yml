@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: parqueadero-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/parqueadero_db}
+    username: ${DB_USER:parqueadero}
+    password: ${DB_PASSWORD:parqueadero123}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    time-zone: America/Guayaquil
+    serialization:
+      write-dates-as-timestamps: false
+
+# Clave requerida por el interceptor de acceso para operaciones de escritura
+app:
+  security:
+    api-key: ${API_KEY:PARQ-2026-G10}
+  notificaciones:
+    retardo-ms: 2000
+
+logging:
+  level:
+    ec.edu.parqueadero: INFO
