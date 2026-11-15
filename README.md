@@ -5,7 +5,7 @@
 Proyecto Grupal Unidad 1 · **Programación Avanzada**
 Autor: **Isaac Betun**
 
-API REST empresarial construida con **Spring Boot 3.3 / Java 21** para administrar usuarios, vehículos,
+API REST empresarial construida con **Spring Boot 3.5 / Java 21** para administrar usuarios, vehículos,
 espacios de estacionamiento y registros de entrada/salida. Calcula el tiempo de permanencia y el monto a
 cobrar, y determina en todo momento la disponibilidad de espacios.
 
@@ -13,7 +13,7 @@ cobrar, y determina en todo momento la disponibilidad de espacios.
 
 | Componente | Tecnología |
 |---|---|
-| Framework | Spring Boot 3.3.5 (Web, Data JPA, Validation, AOP) |
+| Framework | Spring Boot 3.5.7 (Web, Data JPA, Validation, AOP) |
 | Lenguaje | Java 21 |
 | Base de datos | PostgreSQL 16 (H2 en memoria solo para pruebas) |
 | Pruebas | JUnit 5, Mockito, MockMvc |
