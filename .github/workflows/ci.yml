@@ -1,0 +1,57 @@
+name: CI - Parqueadero API
+
+on:
+  push:
+    branches: [ "main", "develop", "feature/**" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    name: Compilar y probar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Obtener el codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: 3. Compilar el proyecto
+        run: mvn -B -ntp clean compile
+
+      - name: 4. Ejecutar las pruebas
+        run: mvn -B -ntp test
+
+      - name: 5. Empaquetar el artefacto
+        run: mvn -B -ntp package -DskipTests
+
+      - name: 6. Publicar reportes de pruebas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-surefire
+          path: target/surefire-reports/
+
+      - name: 7. Publicar JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: parqueadero-api-jar
+          path: target/*.jar
+
+      - name: 8. Informar resultado
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "### ✅ Construccion EXITOSA" >> $GITHUB_STEP_SUMMARY
+            echo "Compilacion, pruebas y empaquetado completados." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ Construccion FALLIDA" >> $GITHUB_STEP_SUMMARY
+            echo "Revise el paso que fallo en el log del job." >> $GITHUB_STEP_SUMMARY
+          fi
