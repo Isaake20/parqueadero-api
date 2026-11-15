@@ -30,3 +30,5 @@ app:
 logging:
   level:
     ec.edu.parqueadero: INFO
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%15.15thread] [%X{requestId:-        }] %-28.28logger{0} : %msg%n"
