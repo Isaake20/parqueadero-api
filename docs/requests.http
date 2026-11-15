@@ -1,0 +1,67 @@
+### Variables
+@base = http://localhost:8080/api
+@key = PARQ-2026-G10
+
+### 1. Disponibilidad inicial
+GET {{base}}/espacios/disponibilidad
+
+### 2. Registrar usuario (201)
+POST {{base}}/usuarios
+Content-Type: application/json
+X-API-KEY: {{key}}
+
+{"cedula":"1726354890","nombres":"Isaac","apellidos":"Betun","email":"isaac.betun@mail.com","telefono":"0991234567","tipo":"ESTUDIANTE"}
+
+### 3. Registrar vehiculo (201)
+POST {{base}}/vehiculos
+Content-Type: application/json
+X-API-KEY: {{key}}
+
+{"placa":"PBA-1234","marca":"Kia","modelo":"Rio","color":"Blanco","tipo":"AUTO","usuarioId":1}
+
+### 4. Controlar ingreso con asignacion automatica (201)
+POST {{base}}/registros/ingreso
+Content-Type: application/json
+X-API-KEY: {{key}}
+
+{"placa":"PBA-1234","observacion":"Ingreso por puerta norte"}
+
+### 5. Regla de negocio: ingreso duplicado (422)
+POST {{base}}/registros/ingreso
+Content-Type: application/json
+X-API-KEY: {{key}}
+
+{"placa":"PBA-1234"}
+
+### 6. Vehiculos dentro del parqueadero
+GET {{base}}/registros/activos
+
+### 7. Controlar salida (asincrona por defecto)
+PATCH {{base}}/registros/1/salida
+X-API-KEY: {{key}}
+
+### 8. Recurso inexistente (404)
+GET {{base}}/vehiculos/placa/ZZZ-9999
+
+### 9. Interceptor: escritura sin API key (401)
+DELETE {{base}}/espacios/9
+
+### 10. Validacion (400)
+POST {{base}}/usuarios
+Content-Type: application/json
+X-API-KEY: {{key}}
+
+{"cedula":"123","nombres":"","apellidos":"X","email":"correo-malo","tipo":"ESTUDIANTE"}
+
+### 11. Mantenimiento de espacio
+PATCH {{base}}/espacios/9/estado
+Content-Type: application/json
+X-API-KEY: {{key}}
+
+{"estado":"MANTENIMIENTO"}
+
+### 12. Auditoria generada por el aspecto
+GET {{base}}/auditoria
+
+### 13. Reporte asincrono
+GET {{base}}/reportes/ingresos/async?desde=2026-01-01T00:00:00&hasta=2026-12-31T23:59:59
