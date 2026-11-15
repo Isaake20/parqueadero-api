@@ -1,0 +1,26 @@
+package ec.edu.parqueadero.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
+
+/** Pool dedicado para las tareas no bloqueantes (notificaciones y reportes). */
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+
+    @Bean(name = "tareasExecutor")
+    public Executor tareasExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(4);
+        executor.setMaxPoolSize(8);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("parq-async-");
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.initialize();
+        return executor;
+    }
+}
